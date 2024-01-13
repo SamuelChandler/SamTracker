@@ -54,7 +54,7 @@ def get_Grocery_List():
 
 #Helper function that gets a list of grocery items from grocery list in Notion
 def get_Personal_Task_List():
-    grocery_list = []
+    personal_list = []
     pages = get_pages(PERSONAL_TASK_ID)
     for page in pages:
 
@@ -65,10 +65,10 @@ def get_Personal_Task_List():
         status = props["Status"]["status"]["name"] #state showing if it has been collected
     
         #store in grocery list
-        grocery_list.append(Grocery_Item(name,catagory,status))
+        personal_list.append(Grocery_Item(name,catagory,status))
 
     #return Results
-    return(grocery_list)
+    return(personal_list)
 
 for x in get_Personal_Task_List():
     print(x.display())
