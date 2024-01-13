@@ -4,8 +4,9 @@ from datetime import datetime, timezone
 
 NOTION_TOKEN = "secret_KDArq1ZKPiyQjU2DLxTUia1WxIgLVkeK81pbaVE9W9R"
 NOTION_PAGE_ID_MAIN = "Main-b44b973ac289441a888528f47135a0ae"
-DATABASE_ID = "ede5454f3b0e428ebc97ff6169b00db6"
 GROCERY_LIST_ID = "80ee8efd236e4196b49f62ebefc013ad"
+PERSONAL_TASK_ID = "ede5454f3b0e428ebc97ff6169b00db6"
+
 headers = {
     "Authorization": "Bearer "+ NOTION_TOKEN,
     "Content-Type": "application/json",
@@ -33,14 +34,13 @@ def get_pages(ID ,num_Pages = None):
     results = data["results"]
     return results
 
-#example using the grocery list in Notion
+#Helper function that gets a list of grocery items from grocery list in Notion
 def get_Grocery_List():
     grocery_list = []
     pages = get_pages(GROCERY_LIST_ID)
     for page in pages:
 
         #get page field that are needed
-        page_id = page["id"]
         props = page["properties"]
         name = props["Name"]["title"][0]["plain_text"] #Name of the grocery Item 
         catagory = props["Type"]["multi_select"][0]["name"] #only taking the first name of the type of item it is
@@ -52,5 +52,23 @@ def get_Grocery_List():
     #return Results
     return(grocery_list)
 
-for x in get_Grocery_List():
+#Helper function that gets a list of grocery items from grocery list in Notion
+def get_Personal_Task_List():
+    grocery_list = []
+    pages = get_pages(PERSONAL_TASK_ID)
+    for page in pages:
+
+        #get page field that are needed
+        props = page["properties"]
+        name = props["Name"]["title"][0]["text"]["content"] #Name of the task
+        catagory = props["Catagory"]["multi_select"][0]["name"] #only taking the first name of the type of task it is
+        status = props["Status"]["status"]["name"] #state showing if it has been collected
+    
+        #store in grocery list
+        grocery_list.append(Grocery_Item(name,catagory,status))
+
+    #return Results
+    return(grocery_list)
+
+for x in get_Personal_Task_List():
     print(x.display())
