@@ -14,6 +14,7 @@ headers = {
 }
 
 def create_page():
+    print("Not Supported :)")
     pass
 
 #function getting the pages from the static batabase ID 
@@ -28,7 +29,7 @@ def get_pages(ID ,num_Pages = None):
     #writes data into a json file for testing and validation purposes
     import json
     with open('db.json','w',encoding='utf8') as f:
-        json.dump(data, f,ensure_ascii=False, indent=4)
+        json.dump(data["results"][0]["properties"], f,ensure_ascii=False, indent=4)
 
     #store and return results
     results = data["results"]
@@ -36,7 +37,9 @@ def get_pages(ID ,num_Pages = None):
 
 #Helper function that gets a list of grocery items from grocery list in Notion
 def get_Grocery_List():
+
     grocery_list = []
+
     pages = get_pages(GROCERY_LIST_ID)
     for page in pages:
 
@@ -63,12 +66,13 @@ def get_Personal_Task_List():
         name = props["Name"]["title"][0]["text"]["content"] #Name of the task
         catagory = props["Catagory"]["multi_select"][0]["name"] #only taking the first name of the type of task it is
         status = props["Status"]["status"]["name"] #state showing if it has been collected
-    
+        print(name,catagory,status)
         #store in grocery list
-        personal_list.append(Grocery_Item(name,catagory,status))
+        personal_list.append(Personal_Task(name,catagory,status)) 
 
     #return Results
     return(personal_list)
 
-for x in get_Personal_Task_List():
-    print(x.display())
+PTL = get_Personal_Task_List()
+for x in PTL:
+    print(x.name)

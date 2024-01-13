@@ -26,3 +26,5 @@ class Personal_Task():
 
     def display(self):
         print(self.name,self.catagory,self.status)
+
+    
