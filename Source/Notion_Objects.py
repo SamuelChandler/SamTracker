@@ -27,4 +27,18 @@ class Personal_Task():
     def display(self):
         print(self.name,self.catagory,self.status)
 
-    
+class School_Task():
+
+    name = str
+    course = str
+    status = str
+    type = str
+
+    def __init__(self,n,c,s,t):
+        self.name = n
+        self.course = c
+        self.status = s
+        self.type = t
+
+    def display(self):
+        print(self.name,self.course,self.status,self.type)

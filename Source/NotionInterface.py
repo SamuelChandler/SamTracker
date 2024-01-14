@@ -6,6 +6,7 @@ NOTION_TOKEN = "secret_KDArq1ZKPiyQjU2DLxTUia1WxIgLVkeK81pbaVE9W9R"
 NOTION_PAGE_ID_MAIN = "Main-b44b973ac289441a888528f47135a0ae"
 GROCERY_LIST_ID = "80ee8efd236e4196b49f62ebefc013ad"
 PERSONAL_TASK_ID = "ede5454f3b0e428ebc97ff6169b00db6"
+SCHOOL_TASK_ID = "76a6332594b54ac196c86ce41e4cd9ec"
 
 headers = {
     "Authorization": "Bearer "+ NOTION_TOKEN,
@@ -65,7 +66,7 @@ def get_Personal_Task_List():
         props = page["properties"]
         name = props["Name"]["title"][0]["text"]["content"] #Name of the task
         catagory = props["Catagory"]["multi_select"][0]["name"] #only taking the first name of the type of task it is
-        status = props["Status"]["status"]["name"] #state showing if it has been collected
+        status = props["Status"]["status"]["name"] #state showing if it has been completed
         print(name,catagory,status)
         #store in grocery list
         personal_list.append(Personal_Task(name,catagory,status)) 
@@ -73,6 +74,25 @@ def get_Personal_Task_List():
     #return Results
     return(personal_list)
 
-PTL = get_Personal_Task_List()
+def get_School_Task_List():
+    school_list = []
+    pages = get_pages(SCHOOL_TASK_ID)
+    for page in pages:
+
+        #get page field that are needed
+        props = page["properties"]
+        name = props["Name"]["title"][0]["text"]["content"] #Name of the task
+        course = props["Class"]["select"]["name"] #the tasks related class
+        status = props["Status"]["status"]["name"] #state showing if it has completed
+        type = props["Type of work"]["multi_select"][0]["name"]#only taking the first name of the type of task it is
+        print(name,course,status,type)
+        #store in grocery list
+        school_list.append(School_Task(name,course,status,type)) 
+
+    #return Results
+    return(school_list)
+
+
+PTL = get_School_Task_List()
 for x in PTL:
     print(x.name)
