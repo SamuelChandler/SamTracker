@@ -56,7 +56,7 @@ def get_Grocery_List():
     #return Results
     return(grocery_list)
 
-#Helper function that gets a list of grocery items from grocery list in Notion
+#Helper function that gets a list of personal task items from personal Task list in Notion
 def get_Personal_Task_List():
     personal_list = []
     pages = get_pages(PERSONAL_TASK_ID)
@@ -74,6 +74,7 @@ def get_Personal_Task_List():
     #return Results
     return(personal_list)
 
+#Helper function that gets a list of school task items from school Task list in Notion
 def get_School_Task_List():
     school_list = []
     pages = get_pages(SCHOOL_TASK_ID)
