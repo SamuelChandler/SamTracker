@@ -23,17 +23,28 @@ def get_pages(ID ,num_Pages = None):
     
     url = f"https://api.notion.com/v1/databases/{ID}/query"
 
-    payload = {"page_size": 100}
+    getAll = num_Pages is None
+    page_size = 100 if getAll else num_Pages
+
+    payload = {"page_size": page_size}
     response  = requests.post(url, json=payload, headers=headers)
     data = response.json()
 
     #writes data into a json file for testing and validation purposes
     import json
     with open('db.json','w',encoding='utf8') as f:
-        json.dump(data["results"][0]["properties"], f,ensure_ascii=False, indent=4)
+        json.dump(data["results"], f,ensure_ascii=False, indent=4)
 
-    #store and return results
+    #store results
     results = data["results"]
+
+    #move to next 100 pages extending onto the previos results
+    while data["has_more"] and getAll:
+        payload = {"page_size":page_size, "start_cursor": data["next_cursor"]}
+        response  = requests.post(url, json=payload, headers=headers)
+        data = response.json()
+        results.extend(data["results"])
+
     return results
 
 #Helper function that gets a list of grocery items from grocery list in Notion
@@ -93,6 +104,8 @@ def get_School_Task_List():
     #return Results
     return(school_list)
 
+def Add_Grocery_Item():
+    pass
 
 PTL = get_School_Task_List()
 for x in PTL:
