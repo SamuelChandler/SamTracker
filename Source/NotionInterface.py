@@ -48,11 +48,11 @@ def get_pages(ID ,num_Pages = None):
     return results
 
 #Helper function that gets a list of grocery items from grocery list in Notion
-def get_Grocery_List():
+def get_Grocery_List(page_number = None):
 
     grocery_list = []
 
-    pages = get_pages(GROCERY_LIST_ID)
+    pages = get_pages(GROCERY_LIST_ID,page_number)
     for page in pages:
 
         #get page field that are needed
@@ -68,9 +68,9 @@ def get_Grocery_List():
     return(grocery_list)
 
 #Helper function that gets a list of personal task items from personal Task list in Notion
-def get_Personal_Task_List():
+def get_Personal_Task_List(page_number = None):
     personal_list = []
-    pages = get_pages(PERSONAL_TASK_ID)
+    pages = get_pages(PERSONAL_TASK_ID,page_number)
     for page in pages:
 
         #get page field that are needed
@@ -86,9 +86,9 @@ def get_Personal_Task_List():
     return(personal_list)
 
 #Helper function that gets a list of school task items from school Task list in Notion
-def get_School_Task_List():
+def get_School_Task_List(page_number = None):
     school_list = []
-    pages = get_pages(SCHOOL_TASK_ID)
+    pages = get_pages(SCHOOL_TASK_ID, page_number)
     for page in pages:
 
         #get page field that are needed
