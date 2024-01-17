@@ -18,10 +18,21 @@ def create_page():
     print("Not Supported :)")
     pass
 
+#updates a page under the Page ID to the inputed Data (JSON). 200 is success
+def update_page(page_ID: str, data: dict):
+    url = f"https://api.notion.com/v1/pages/{page_ID}"
+
+    payload = {"properties": data}
+
+    res = requests.patch(url, json=payload, headers=headers)
+    print(res.status_code)
+    return res
+
+
 #function getting the pages from the static batabase ID 
-def get_pages(ID ,num_Pages = None):
+def get_pages(database_ID: str ,num_Pages = None):
     
-    url = f"https://api.notion.com/v1/databases/{ID}/query"
+    url = f"https://api.notion.com/v1/databases/{database_ID}/query"
 
     getAll = num_Pages is None
     page_size = 100 if getAll else num_Pages
