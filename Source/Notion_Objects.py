@@ -12,6 +12,9 @@ class Grocery_Item():
     def display(self):
         print(self.name,self.type,self.collected)
 
+    def to_Data():
+        pass #formats to data dictionary for post to notion
+
 
 class Personal_Task():
 
@@ -26,6 +29,9 @@ class Personal_Task():
 
     def display(self):
         print(self.name,self.catagory,self.status)
+
+    def to_Data():
+        pass #formats to data dictionary for post to notion
 
 class School_Task():
 
@@ -42,3 +48,6 @@ class School_Task():
 
     def display(self):
         print(self.name,self.course,self.status,self.type)
+
+    def to_Data():
+        pass #formats to data dictionary for post to notion

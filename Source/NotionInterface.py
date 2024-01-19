@@ -28,7 +28,6 @@ def update_page(page_ID: str, data: dict):
     print(res.status_code)
     return res
 
-
 #function getting the pages from the static batabase ID 
 def get_pages(database_ID: str ,num_Pages = None):
     
@@ -115,8 +114,17 @@ def get_School_Task_List(page_number = None):
     #return Results
     return(school_list)
 
-def Add_Grocery_Item():
-    pass
+def Add_Grocery_Item(item: Grocery_Item):
+    data = item.to_Data()#not created yet 
+    update_page(GROCERY_LIST_ID,data)
+
+def Add_Personal_Task(item: Personal_Task):
+    data = item.to_Data()#not created yet
+    update_page(PERSONAL_TASK_ID,data)
+
+def Add_School_Task(item: School_Task):
+    data = item.to_Data()#not created yet
+    update_page(SCHOOL_TASK_ID,data)
 
 PTL = get_School_Task_List()
 for x in PTL:
