@@ -9,11 +9,17 @@ class Grocery_Item():
         self.type = t
         self.collected = c
 
+    #prints to cmd the atributes, broken
     def display(self):
         print(self.name,self.type,self.collected)
 
-    def to_Data():
-        pass #formats to data dictionary for post to notion
+    #formats to data dictionary for post to notion
+    def to_Data(self):
+        data = {"Type":{"select":{"name":self.type}},
+                "Collected":{"checkbox":self.collected},
+                "Name":{"title":{"text":{"content":self.name}},
+                        "plain_text":self.name}}
+        return data
 
 
 class Personal_Task():

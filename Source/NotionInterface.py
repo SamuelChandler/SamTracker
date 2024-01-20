@@ -25,7 +25,7 @@ def update_page(page_ID: str, data: dict):
     payload = {"properties": data}
 
     res = requests.patch(url, json=payload, headers=headers)
-    print(res.status_code)
+    print(res.reason)
     return res
 
 #function getting the pages from the static batabase ID 
@@ -68,7 +68,7 @@ def get_Grocery_List(page_number = None):
         #get page field that are needed
         props = page["properties"]
         name = props["Name"]["title"][0]["plain_text"] #Name of the grocery Item 
-        catagory = props["Type"]["multi_select"][0]["name"] #only taking the first name of the type of item it is
+        catagory = props["Type"]["select"]["name"] #only taking the first name of the type of item it is
         collected = props["Collected"]["checkbox"] #state showing if it has been collected
     
         #store in grocery list
@@ -115,7 +115,8 @@ def get_School_Task_List(page_number = None):
     return(school_list)
 
 def Add_Grocery_Item(item: Grocery_Item):
-    data = item.to_Data()#not created yet 
+    data = item.to_Data()
+    print(data)
     update_page(GROCERY_LIST_ID,data)
 
 def Add_Personal_Task(item: Personal_Task):
@@ -126,6 +127,8 @@ def Add_School_Task(item: School_Task):
     data = item.to_Data()#not created yet
     update_page(SCHOOL_TASK_ID,data)
 
-PTL = get_School_Task_List()
-for x in PTL:
-    print(x.name)
+get_Grocery_List()
+
+PTL = Grocery_Item("test Item","Food",False)
+
+Add_Grocery_Item(PTL)
