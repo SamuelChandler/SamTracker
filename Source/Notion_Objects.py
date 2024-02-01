@@ -14,11 +14,17 @@ class Grocery_Item():
         print(self.name,self.type,self.collected)
 
     #formats to data dictionary for post to notion
-    def to_Data(self):
-        data = {"Type":{"select":{"name":self.type}},
-                "Collected":{"checkbox":self.collected},
-                "Name":{"title":{"text":{"content":self.name}},
-                        "plain_text":self.name}}
+    def to_Data(self,db_ID):
+
+        data = {
+            "parent": { "database_id": db_ID },
+            "properties": {
+                "Name": { "title": [ { "text": { "content": self.name}}]},
+                "Collected" : { "checkbox": self.collected},
+                "Type":{"select":{"name": self.type}}
+            }
+        }
+
         return data
 
 

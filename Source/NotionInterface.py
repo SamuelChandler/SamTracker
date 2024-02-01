@@ -19,13 +19,17 @@ def create_page():
     pass
 
 #updates a page under the Page ID to the inputed Data (JSON). 200 is success
-def update_page(page_ID: str, data: dict):
-    url = f"https://api.notion.com/v1/pages/{page_ID}"
+def add_db_item(page_ID: str, data: dict):
+    url = f"https://api.notion.com/v1/pages"
 
-    payload = {"properties": data}
+    res = requests.post(url, json=data, headers=headers)
 
-    res = requests.patch(url, json=payload, headers=headers)
-    print(res.reason)
+    if(res.status_code == 404):
+        print("Could not find page with ID: " + page_ID)
+    elif(res.status_code != 200):
+        print(res.status_code)
+    else:
+        print("successful POST")
     return res
 
 #function getting the pages from the static batabase ID 
@@ -115,20 +119,20 @@ def get_School_Task_List(page_number = None):
     return(school_list)
 
 def Add_Grocery_Item(item: Grocery_Item):
-    data = item.to_Data()
+    data = item.to_Data(GROCERY_LIST_ID)
     print(data)
-    update_page(GROCERY_LIST_ID,data)
+    add_db_item(GROCERY_LIST_ID,data)
 
 def Add_Personal_Task(item: Personal_Task):
     data = item.to_Data()#not created yet
-    update_page(PERSONAL_TASK_ID,data)
+    add_db_item(PERSONAL_TASK_ID,data)
 
 def Add_School_Task(item: School_Task):
     data = item.to_Data()#not created yet
-    update_page(SCHOOL_TASK_ID,data)
+    add_db_item(SCHOOL_TASK_ID,data)
 
 get_Grocery_List()
 
-PTL = Grocery_Item("test Item","Food",False)
+PTL = Grocery_Item("test Item","Computer",False)
 
 Add_Grocery_Item(PTL)
