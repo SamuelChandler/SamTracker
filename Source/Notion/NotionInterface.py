@@ -18,20 +18,6 @@ def create_page():
     print("Not Supported :)")
     pass
 
-#updates a page under the Page ID to the inputed Data (JSON). 200 is success
-def add_db_item(page_ID: str, data: dict):
-    url = f"https://api.notion.com/v1/pages"
-
-    res = requests.post(url, json=data, headers=headers)
-
-    if(res.status_code == 404):
-        print("Could not find page with ID: " + page_ID)
-    elif(res.status_code != 200):
-        print(res.status_code)
-    else:
-        print("successful POST")
-    return res
-
 #function getting the pages from the static batabase ID 
 def get_pages(database_ID: str ,num_Pages = None):
     
@@ -42,6 +28,13 @@ def get_pages(database_ID: str ,num_Pages = None):
 
     payload = {"page_size": page_size}
     response  = requests.post(url, json=payload, headers=headers)
+    
+    if response.status_code != 200:
+        print("Error with get_pages: " + response.status_code)
+    else:
+        print("get sucessful")
+    
+    
     data = response.json()
 
     #writes data into a json file for testing and validation purposes
@@ -83,7 +76,9 @@ def get_Grocery_List(page_number = None):
 
 #Helper function that gets a list of personal task items from personal Task list in Notion
 def get_Personal_Task_List(page_number = None):
+
     personal_list = []
+
     pages = get_pages(PERSONAL_TASK_ID,page_number)
     for page in pages:
 
@@ -92,7 +87,7 @@ def get_Personal_Task_List(page_number = None):
         name = props["Name"]["title"][0]["text"]["content"] #Name of the task
         catagory = props["Catagory"]["multi_select"][0]["name"] #only taking the first name of the type of task it is
         status = props["Status"]["status"]["name"] #state showing if it has been completed
-        print(name,catagory,status)
+        
         #store in grocery list
         personal_list.append(Personal_Task(name,catagory,status)) 
 
@@ -111,28 +106,52 @@ def get_School_Task_List(page_number = None):
         course = props["Class"]["select"]["name"] #the tasks related class
         status = props["Status"]["status"]["name"] #state showing if it has completed
         type = props["Type of work"]["multi_select"][0]["name"]#only taking the first name of the type of task it is
-        print(name,course,status,type)
+        
         #store in grocery list
         school_list.append(School_Task(name,course,status,type)) 
 
     #return Results
     return(school_list)
 
+#Adds a grocery item to the grocery item database in Notion
 def Add_Grocery_Item(item: Grocery_Item):
     data = item.to_Data(GROCERY_LIST_ID)
-    print(data)
-    add_db_item(GROCERY_LIST_ID,data)
+    
+    url = f"https://api.notion.com/v1/pages"
 
+    res = requests.post(url, json=data, headers=headers)
+
+    if(res.status_code != 200):
+        print("POST Error: " + res.status_code)
+    else:
+        print("successful POST")
+    return res
+
+#Adds a personal task to notion database
 def Add_Personal_Task(item: Personal_Task):
-    data = item.to_Data()#not created yet
-    add_db_item(PERSONAL_TASK_ID,data)
+    data = item.to_Data(PERSONAL_TASK_ID)
+    
+    url = f"https://api.notion.com/v1/pages"
 
+    res = requests.post(url, json=data, headers=headers)
+
+    if(res.status_code != 200):
+        print("POST Error: " + res.status_code)
+    else:
+        print("successful POST")
+    return res
+
+#Adds a school task to its notion Database
 def Add_School_Task(item: School_Task):
-    data = item.to_Data()#not created yet
-    add_db_item(SCHOOL_TASK_ID,data)
+    data = item.to_Data(SCHOOL_TASK_ID)
+    
+    url = f"https://api.notion.com/v1/pages"
 
-get_Grocery_List()
+    res = requests.post(url, json=data, headers=headers)
 
-PTL = Grocery_Item("test Item","Computer",False)
+    if(res.status_code != 200):
+        print("POST Error: " + res.status_code)
+    else:
+        print("successful POST")
+    return res
 
-Add_Grocery_Item(PTL)

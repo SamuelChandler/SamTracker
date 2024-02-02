@@ -27,7 +27,6 @@ class Grocery_Item():
 
         return data
 
-
 class Personal_Task():
 
     name = str
@@ -42,8 +41,18 @@ class Personal_Task():
     def display(self):
         print(self.name,self.catagory,self.status)
 
-    def to_Data():
-        pass #formats to data dictionary for post to notion
+    def to_Data(self,db_ID):
+
+        data = {
+            "parent": { "database_id": db_ID },
+            "properties": {
+                "Name": { "title": [ { "text": { "content": self.name}}]},
+                "Status" : {"status":{"name": self.status}},
+                "Catagory":{"multi_select":[{"name": self.catagory}]}
+            }
+        }
+
+        return data
 
 class School_Task():
 
@@ -61,5 +70,16 @@ class School_Task():
     def display(self):
         print(self.name,self.course,self.status,self.type)
 
-    def to_Data():
-        pass #formats to data dictionary for post to notion
+    def to_Data(self,db_ID):
+
+        data = {
+            "parent": { "database_id": db_ID },
+            "properties": {
+                "Name": { "title": [ { "text": { "content": self.name}}]},
+                "Status" : {"status":{"name": self.status}},
+                "Class":{"select":{"name": self.course}},
+                "Type of work": {"multi_select": [{"name":self.type}]}
+            }
+        }
+
+        return data

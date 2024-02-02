@@ -1,4 +1,4 @@
 import requests, json
-from Notion_Objects import *
+from Source.Notion.Notion_Objects import *
 from datetime import datetime, timezone
 
